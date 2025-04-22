@@ -58,6 +58,9 @@ dependencies {
     // Optional: for GPU support
     implementation("org.tensorflow:tensorflow-lite-gpu:2.11.0")
 
+    //gson
+    implementation("com.google.code.gson:gson:2.8.9")
+
 
 
 }

@@ -14,19 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_marginTop="16dp"
-        android:contentDescription="Captured Image"
+        android:contentDescription="Preview of the captured image"
         android:scaleType="centerCrop"
         android:src="@drawable/baseline_image_24" />
-
-    <Button
-        android:id="@+id/captureImgBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/blue"
-        android:text="Capture Image"
-        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/labelText"
@@ -34,13 +24,35 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
-        android:text="Hello World!"
+        android:text="Detected labels will appear here"
         android:textColor="@color/blue"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
 
+    <Button
+        android:id="@+id/captureImgBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Capture Image"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/resetBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next Ingredient"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/recommendBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recommend Recipe" />
 </LinearLayout>

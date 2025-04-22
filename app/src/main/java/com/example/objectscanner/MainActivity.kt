@@ -1,120 +1,303 @@
 package com.example.objectscanner
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.activity. result. contract. ActivityResultContracts
-import androidx. activity. result. ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import org.tensorflow.lite.Interpreter
-import java.nio.MappedByteBuffer
-import java.nio.channels.FileChannel
-import java.nio.ByteBuffer
-import android.content.res.AssetFileDescriptor
-import android.provider.MediaStore
+import com.google.mlkit.common.model.LocalModel
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.label.ImageLabeling
+import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val MAX_IMAGE_SIZE = 1024 // Maximum dimension for image processing
+        private const val JPEG_QUALITY = 80 // JPEG compression quality
+        private const val DEBUG = true // Set this to false in production
+    }
 
     private lateinit var objectImage: ImageView
     private lateinit var labelText: TextView
     private lateinit var captureImgBtn: Button
-    private lateinit var tfliteInterpreter: Interpreter
+    private lateinit var resetBtn: Button
+    private lateinit var recommendBtn: Button
+    private lateinit var nextBtn: Button
+    private var imageLabeler: com.google.mlkit.vision.label.ImageLabeler? = null
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+
+    private val detectedIngredients = mutableListOf<String>()
+    private var currentBitmap: Bitmap? = null
+    private var currentIngredientIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initializeViews()
+        setupImageLabeler()
+        setupCameraLauncher()
+        setupClickListeners()
+        checkCameraPermission()
+        
+        // Initialize button states
+        updateButtonStates()
+    }
+
+    private fun initializeViews() {
         objectImage = findViewById(R.id.objectImage)
         labelText = findViewById(R.id.labelText)
         captureImgBtn = findViewById(R.id.captureImgBtn)
+        resetBtn = findViewById(R.id.resetBtn)
+        recommendBtn = findViewById(R.id.recommendBtn)
+        nextBtn = findViewById(R.id.nextBtn)
+    }
 
-        checkCameraPermission()
+    private fun setupImageLabeler() {
+        try {
+            val localModel = LocalModel.Builder()
+                .setAssetFilePath("metadata.tflite")
+                .build()
 
-        // Load the TensorFlow Lite model
-        tfliteInterpreter = Interpreter(loadModelFile())
+            val customOptions = CustomImageLabelerOptions.Builder(localModel)
+                .setConfidenceThreshold(0.5f)
+                .build()
 
+            imageLabeler = ImageLabeling.getClient(customOptions)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting up image labeler: ${e.message}")
+            Toast.makeText(this, "Error initializing image recognition", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun setupCameraLauncher() {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val extras = result.data?.extras
-                val imageBitmap = extras?.getParcelable<Bitmap>("data")
-                if (imageBitmap != null) {
-                    objectImage.setImageBitmap(imageBitmap)
-                    labelImage(imageBitmap)
+                handleCameraResult(result.data)
+            } else {
+                labelText.text = "Image capture cancelled."
+            }
+        }
+    }
+
+    private fun updateButtonStates() {
+        // Capture button: enabled when no image
+        captureImgBtn.isEnabled = currentBitmap == null
+        
+        // Reset button: enabled when we have an image
+        resetBtn.isEnabled = currentBitmap != null
+        
+        // Next button: enabled when we have an image
+        nextBtn.isEnabled = currentBitmap != null
+        
+        // Recommend button: enabled when we have detected ingredients
+        recommendBtn.isEnabled = detectedIngredients.isNotEmpty()
+    }
+
+    private fun handleCameraResult(data: Intent?) {
+        try {
+            val extras = data?.extras
+            val imageBitmap = extras?.get("data") as? Bitmap
+            if (imageBitmap != null) {
+                val optimizedBitmap = optimizeBitmap(imageBitmap)
+                if (optimizedBitmap != null) {
+                    currentBitmap = optimizedBitmap
+                    objectImage.setImageBitmap(currentBitmap)
+                    labelImage(currentBitmap)
+                    updateButtonStates()
                 } else {
-                    labelText.text = "Unable to capture image"
+                    labelText.text = "Error optimizing image."
                 }
+            } else {
+                labelText.text = "Unable to capture image."
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error handling camera result: ${e.message}")
+            labelText.text = "Error processing image."
         }
+    }
 
+    private fun optimizeBitmap(bitmap: Bitmap): Bitmap? {
+        return try {
+            // Scale down if necessary
+            val scale = if (bitmap.width > MAX_IMAGE_SIZE || bitmap.height > MAX_IMAGE_SIZE) {
+                val scaleX = MAX_IMAGE_SIZE.toFloat() / bitmap.width
+                val scaleY = MAX_IMAGE_SIZE.toFloat() / bitmap.height
+                scaleX.coerceAtMost(scaleY)
+            } else {
+                1f
+            }
+
+            if (scale < 1f) {
+                Bitmap.createScaledBitmap(
+                    bitmap,
+                    (bitmap.width * scale).toInt(),
+                    (bitmap.height * scale).toInt(),
+                    true
+                )
+            } else {
+                bitmap
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error optimizing bitmap: ${e.message}")
+            null
+        }
+    }
+
+    private fun setupClickListeners() {
         captureImgBtn.setOnClickListener {
-            val clickPicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (clickPicture.resolveActivity(packageManager) != null) {
-                cameraLauncher.launch(clickPicture)
-            }
+            launchCamera()
+        }
+
+        resetBtn.setOnClickListener {
+            resetDetection()
+        }
+
+        recommendBtn.setOnClickListener {
+            navigateToRecommendations()
+        }
+
+        nextBtn.setOnClickListener {
+            labelText.text = "Press Capture to scan next"
+            labelText.visibility = View.VISIBLE
+            
+            // Enable capture and disable next
+            captureImgBtn.isEnabled = true
+            nextBtn.isEnabled = false
         }
     }
 
-    // Load the .tflite model file from assets
-    private fun loadModelFile(): MappedByteBuffer {
-        val fileDescriptor: AssetFileDescriptor = assets.openFd("model.tflite")
-        val inputStream = fileDescriptor.createInputStream()
-        val fileChannel = inputStream.channel
-        val startOffset = fileDescriptor.startOffset
-        val declaredLength = fileDescriptor.declaredLength
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
+    private fun launchCamera() {
+        try {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePictureIntent.resolveActivity(packageManager) != null) {
+                cameraLauncher.launch(takePictureIntent)
+            } else {
+                Toast.makeText(this, "No camera app found on the device.", Toast.LENGTH_LONG).show()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error launching camera: ${e.message}")
+            Toast.makeText(this, "Error accessing camera", Toast.LENGTH_LONG).show()
+        }
     }
 
-    // Process the captured image and run inference
-    private fun labelImage(bitmap: Bitmap) {
-        // Preprocess the image for inference (resize, normalize, etc.)
-        val input = preprocessImage(bitmap)
-
-        // Run inference
-        val output = Array(1) { FloatArray(10) }  // Adjust output size according to your model
-        tfliteInterpreter.run(input, output)
-
-        // Display the result
-        displayLabel(output)
+    private fun resetDetection() {
+        detectedIngredients.clear()
+        currentBitmap?.recycle()
+        currentBitmap = null
+        labelText.text = "Reset complete. Start fresh!"
+        objectImage.setImageDrawable(null)
+        currentIngredientIndex = 0
+        updateButtonStates()
     }
 
-    // Preprocess image (resize, normalize, etc.) to match model input
-    private fun preprocessImage(bitmap: Bitmap): ByteBuffer {
-        val width = 224  // Change based on your model input dimensions
-        val height = 224
-        val buffer = ByteBuffer.allocateDirect(4 * width * height * 3)
-        buffer.rewind()
+    private fun labelImage(bitmap: Bitmap?) {
+        if (bitmap == null) {
+            labelText.text = "No image to process."
+            return
+        }
 
-        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true)
-        for (y in 0 until height) {
-            for (x in 0 until width) {
-                val pixel = resizedBitmap.getPixel(x, y)
-                buffer.putFloat(((pixel shr 16) and 0xFF) / 255.0f) // Red
-                buffer.putFloat(((pixel shr 8) and 0xFF) / 255.0f)  // Green
-                buffer.putFloat((pixel and 0xFF) / 255.0f)           // Blue
+        if (imageLabeler == null) {
+            labelText.text = "Image recognition not initialized."
+            return
+        }
+
+        try {
+            val inputImage = InputImage.fromBitmap(bitmap, 0)
+
+            imageLabeler?.process(inputImage)
+                ?.addOnSuccessListener { labels ->
+                    handleLabelSuccess(labels)
+                }
+                ?.addOnFailureListener { e ->
+                    handleLabelFailure(e)
+                }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error labeling image: ${e.message}")
+            labelText.text = "Error processing image."
+        }
+    }
+
+    private fun handleLabelSuccess(labels: List<com.google.mlkit.vision.label.ImageLabel>) {
+        if (DEBUG) {
+            labels.forEach { label ->
+                Log.d(TAG, "Detected Label: '${label.text}', Confidence: ${label.confidence}")
             }
         }
-        return buffer
+
+        if (labels.isNotEmpty()) {
+            val ingredient = labels[0].text.trim().lowercase()
+            detectedIngredients.add(ingredient)
+            labelText.text = "Detected: $ingredient"
+            labelText.visibility = View.VISIBLE
+            updateButtonStates()
+        } else {
+            labelText.text = "No ingredient detected."
+            updateButtonStates()
+        }
     }
 
-    // Display the label on the screen (using the most confident result)
-    private fun displayLabel(output: Array<FloatArray>) {
-        val result = output[0]
-        val label = "Label: ${result[0]}" // Adjust based on the output format of your model
-        labelText.text = label
+    private fun handleLabelFailure(e: Exception) {
+        Log.e(TAG, "Error in image labeling: ${e.message}")
+        labelText.text = "Error: ${e.message}"
+        updateButtonStates()
     }
 
-    // Check if the camera permission is granted
+    private fun navigateToRecommendations() {
+        try {
+            if (detectedIngredients.isEmpty()) {
+                Toast.makeText(this, "No ingredients detected yet", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val intent = Intent(this, RecipeRecommendationActivity::class.java)
+            intent.putStringArrayListExtra("detectedIngredients", ArrayList(detectedIngredients))
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Error opening recommendations", Toast.LENGTH_LONG).show()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error navigating to recommendations: ${e.message}")
+            Toast.makeText(this, "Error opening recommendations", Toast.LENGTH_LONG).show()
+        }
+    }
+
     private fun checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 1)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera permission is required to use this feature.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        currentBitmap?.recycle()
+        currentBitmap = null
     }
 }

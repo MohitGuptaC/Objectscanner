@@ -1,0 +1,104 @@
+[
+    
+    {
+        "name": "Bitter Gourd Chips",
+        "ingredients": ["bitter_gourd", "salt", "turmeric", "oil","chilli powder"],
+        "link": "https://www.youtube.com/results?search_query=bitter+gourd+chips"
+    },
+    {
+        "name": "Bottle Gourd Curry",
+        "ingredients": ["bottle_gourd", "tomato", "onion", "garlic"],
+        "link": "https://www.youtube.com/results?search_query=bottle+gourd+curry"
+    },
+    {
+        "name": "Brinjal Fry",
+        "ingredients": ["brinjal", "Turmeric powder", "Spices"],
+        "link": "https://www.youtube.com/results?search_query=brinjal+fry"
+    },
+    {
+        "name": "Broccoli Salad",
+        "ingredients": ["broccoli", "cucumber"],
+        "link": "https://www.youtube.com/results?search_query=Broccoli+Salad"
+    },
+    {
+        "name": "Tomato rasam",
+        "ingredients": [ "tomato","toor dal","tamarind","garlic"],
+        "link": "https://www.youtube.com/results?search_query=toamto+rasam"
+    },
+    {
+        "name": "Pumpkin cake",
+        "ingredients": ["pumpkin","All-purpose flour","baking soda"],
+        "link": "https://www.youtube.com/results?search_query=pumkin+cake"
+    },
+    {
+        "name": "Carrot Halwa",
+        "ingredients": ["carrot", "Milk", "sugar", "ghee", "cardamom"],
+        "link": "https://www.youtube.com/results?search_query=carrot+halwa"
+    },
+    {
+        "name": "Cauliflower Manchurian",
+        "ingredients": ["cauliflower", "garlic", "onion", "Soy Sauce", "Spices"],
+        "link": "https://www.youtube.com/results?search_query=Cauliflower+Manchurian"
+    },
+    {
+        "name": "Cucumber Raita",
+        "ingredients": ["cucumber", "Yogurt", "Salt", "Cumin", "Mint"],
+        "link": "https://www.youtube.com/results?search_query=cucumber+raita"
+    },
+    {
+        "name": "Papaya Halwa",
+        "ingredients": ["papaya", "Cashews","Rice flour"],
+        "link": "https://www.youtube.com/results?search_query=papaya+halwa"
+    },
+    {
+        "name": "Potato Chips",
+        "ingredients": ["potato", "chilli powder"],
+        "link": "https://www.youtube.com/results?search_query=potato+chips"
+    },
+    {
+        "name": "Pumpkin Soup",
+        "ingredients": ["pumpkin", "onion", "garlic"],
+        "link": "https://www.youtube.com/results?search_query=pumkin+soup"
+    },
+    {
+        "name": "Capsicum fry",
+        "ingredients": ["capsicum","Mustard seeds","Tamarind"],
+        "link": "https://www.youtube.com/results?search_query=capsicum+curry"
+    },
+    {
+        "name": "Tomato Soup",
+        "ingredients": ["tomato", "garlic", "onion"],
+        "link": "https://www.youtube.com/results?search_query=tomoto+soup"
+    },
+    {
+        "name": "veg pulao",
+        "ingredients": ["tomato", "carrot","bean","potato"],
+        "link": "https://www.youtube.com/results?search_query=veg+pulao"
+    },
+    {
+        "name": "Brinjal curry",
+        "ingredients": ["brinjal","tomato", "garlic", "onion"],
+        "link": "https://www.youtube.com/results?search_query=brinjal+curry"
+    },
+    {
+        "name": "Cabbage curry",
+        "ingredients": ["cabbage","carrot","coconut"],
+        "link": "https://www.youtube.com/results?search_query=cabbage+curry"
+    },
+    {
+        "name": "Radish Chutney",
+        "ingredients": ["radish","red chilli"],
+        "link": "https://www.youtube.com/results?search_query=radish+curry"
+    },
+    {
+        "name": "French Fries",
+        "ingredients": ["potato","oil","salt"],
+        "link": "https://www.youtube.com/results?search_query=french+fries"
+    },
+    {
+        "name": "veg carrot cake",
+        "ingredients": ["all-purpose flour","baking soda","cinnamon","vegetable oil","carrots","flakked coconut","raisins","wallnuts"],
+        "link": "https://www.youtube.com/watch?v=Q9lKv1xpe28"
+    }
+
+]

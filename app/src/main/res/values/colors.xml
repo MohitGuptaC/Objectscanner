@@ -3,4 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#0096ff</color>
+
+    //after my update
+    <color name="background_color">#FAFAFA</color> <!-- Light gray background -->
+    <color name="primary_text_color">#3E4A59</color> <!-- Darker text color -->
+    <color name="button_background">#FF5722</color> <!-- Vibrant orange for button -->
+    <color name="card_background">#FFFFFF</color> <!-- White card background -->
 </resources>
