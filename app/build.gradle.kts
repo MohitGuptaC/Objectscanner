@@ -60,17 +60,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation ("com.google.mlkit:image-labeling-custom:17.0.3")
-    implementation ("com.google.mlkit:image-labeling:17.0.9")
-
-    // Add TensorFlow Lite dependency (for running your model)
-    implementation("org.tensorflow:tensorflow-lite:2.11.0")
-
-    // Optional: for GPU support
-    implementation("org.tensorflow:tensorflow-lite-gpu:2.11.0")
 
     //gson
     implementation("com.google.code.gson:gson:2.8.9")
-
-
-
 }
