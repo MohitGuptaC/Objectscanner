@@ -19,7 +19,7 @@ import org.tensorflow.lite.Interpreter.Options
  */
 class TFLiteModel(
     context: Context,
-    private val outputSize: Int = 10,  // Default output size, adjust based on your model
+    private val outputSize: Int = 15,  // Default output size, adjust based on your model
     private val modelPath: String = "metadata.tflite",  // Path to model in assets
     private val numThreads: Int = 4
 ) {
