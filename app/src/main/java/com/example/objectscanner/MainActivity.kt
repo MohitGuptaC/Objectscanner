@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -21,16 +20,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.label.ImageLabeling
 import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
-import java.io.ByteArrayOutputStream
-import java.io.IOException
+import androidx.core.graphics.scale
 
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "MainActivity"
         private const val MAX_IMAGE_SIZE = 1024 // Maximum dimension for image processing
-        private const val JPEG_QUALITY = 80 // JPEG compression quality
         private const val DEBUG = true // Set this to false in production
     }
 
@@ -80,10 +76,10 @@ class MainActivity : AppCompatActivity() {
                 .setConfidenceThreshold(0.5f)
                 .build()
 
-            imageLabeler = ImageLabeling.getClient(customOptions)
+            imageLabeler = com.google.mlkit.vision.label.ImageLabeling.getClient(customOptions)
         } catch (e: Exception) {
             Log.e(TAG, "Error setting up image labeler: ${e.message}")
-            Toast.makeText(this, "Error initializing image recognition", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.error_initializing_recognition), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -92,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 handleCameraResult(result.data)
             } else {
-                labelText.text = "Image capture cancelled."
+                labelText.text = getString(R.string.image_capture_cancelled)
             }
         }
     }
@@ -113,8 +109,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleCameraResult(data: Intent?) {
         try {
-            val extras = data?.extras
-            val imageBitmap = extras?.get("data") as? Bitmap
+            val imageBitmap = data?.extras?.get("data") as? Bitmap
             if (imageBitmap != null) {
                 val optimizedBitmap = optimizeBitmap(imageBitmap)
                 if (optimizedBitmap != null) {
@@ -123,20 +118,20 @@ class MainActivity : AppCompatActivity() {
                     labelImage(currentBitmap)
                     updateButtonStates()
                 } else {
-                    labelText.text = "Error optimizing image."
+                    labelText.text = getString(R.string.error_optimizing_image)
                 }
             } else {
-                labelText.text = "Unable to capture image."
+                labelText.text = getString(R.string.unable_to_capture_image)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error handling camera result: ${e.message}")
-            labelText.text = "Error processing image."
+            labelText.text = getString(R.string.error_processing_image)
         }
     }
 
     private fun optimizeBitmap(bitmap: Bitmap): Bitmap? {
         return try {
-            // Scale down if necessary
+            // Calculate scale factor
             val scale = if (bitmap.width > MAX_IMAGE_SIZE || bitmap.height > MAX_IMAGE_SIZE) {
                 val scaleX = MAX_IMAGE_SIZE.toFloat() / bitmap.width
                 val scaleY = MAX_IMAGE_SIZE.toFloat() / bitmap.height
@@ -146,12 +141,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (scale < 1f) {
-                Bitmap.createScaledBitmap(
-                    bitmap,
-                    (bitmap.width * scale).toInt(),
-                    (bitmap.height * scale).toInt(),
-                    true
-                )
+                bitmap.scale((bitmap.width * scale).toInt(), (bitmap.height * scale).toInt())
             } else {
                 bitmap
             }
@@ -175,7 +165,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         nextBtn.setOnClickListener {
-            labelText.text = "Press Capture to scan next"
+            labelText.text = getString(R.string.press_capture_to_scan_next)
             labelText.visibility = View.VISIBLE
             
             // Enable capture and disable next
@@ -190,11 +180,11 @@ class MainActivity : AppCompatActivity() {
             if (takePictureIntent.resolveActivity(packageManager) != null) {
                 cameraLauncher.launch(takePictureIntent)
             } else {
-                Toast.makeText(this, "No camera app found on the device.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.no_camera_app_found), Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error launching camera: ${e.message}")
-            Toast.makeText(this, "Error accessing camera", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.error_accessing_camera), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -202,7 +192,7 @@ class MainActivity : AppCompatActivity() {
         detectedIngredients.clear()
         currentBitmap?.recycle()
         currentBitmap = null
-        labelText.text = "Reset complete. Start fresh!"
+        labelText.text = getString(R.string.reset_complete)
         objectImage.setImageDrawable(null)
         currentIngredientIndex = 0
         updateButtonStates()
@@ -210,12 +200,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun labelImage(bitmap: Bitmap?) {
         if (bitmap == null) {
-            labelText.text = "No image to process."
+            labelText.text = getString(R.string.no_image_to_process)
             return
         }
 
         if (imageLabeler == null) {
-            labelText.text = "Image recognition not initialized."
+            labelText.text = getString(R.string.image_recognition_not_initialized)
             return
         }
 
@@ -231,7 +221,7 @@ class MainActivity : AppCompatActivity() {
                 }
         } catch (e: Exception) {
             Log.e(TAG, "Error labeling image: ${e.message}")
-            labelText.text = "Error processing image."
+            labelText.text = getString(R.string.error_processing_image)
         }
     }
 
@@ -245,18 +235,18 @@ class MainActivity : AppCompatActivity() {
         if (labels.isNotEmpty()) {
             val ingredient = labels[0].text.trim().lowercase()
             detectedIngredients.add(ingredient)
-            labelText.text = "Detected: $ingredient"
+            labelText.text = getString(R.string.detected_label, ingredient)
             labelText.visibility = View.VISIBLE
             updateButtonStates()
         } else {
-            labelText.text = "No ingredient detected."
+            labelText.text = getString(R.string.no_ingredient_detected)
             updateButtonStates()
         }
     }
 
     private fun handleLabelFailure(e: Exception) {
         Log.e(TAG, "Error in image labeling: ${e.message}")
-        labelText.text = "Error: ${e.message}"
+        labelText.text = getString(R.string.error_processing_image)
         updateButtonStates()
     }
 

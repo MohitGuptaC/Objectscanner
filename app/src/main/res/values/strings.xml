@@ -1,4 +1,34 @@
 <resources>
     <string name="app_name">Objectscanner</string>
 
+    <!-- MainActivity strings -->
+    <string name="error_optimizing_image">Error optimizing image.</string>
+    <string name="unable_to_capture_image">Unable to capture image.</string>
+    <string name="error_processing_image">Error processing image.</string>
+    <string name="no_camera_app_found">No camera app found on the device.</string>
+    <string name="error_accessing_camera">Error accessing camera</string>
+    <string name="reset_complete">Reset complete. Start fresh!</string>
+    <string name="no_image_to_process">No image to process.</string>
+    <string name="image_recognition_not_initialized">Image recognition not initialized.</string>
+    <string name="error_initializing_recognition">Error initializing image recognition</string>
+    <string name="image_capture_cancelled">Image capture cancelled.</string>
+    <string name="press_capture_to_scan_next">Press Capture to scan next</string>
+    <string name="detected_label">Detected: %1$s</string>
+    <string name="no_ingredient_detected">No ingredient detected.</string>
+
+    <!-- RecipeRecommendationActivity strings -->
+    <string name="no_ingredients_detected">No ingredients detected.</string>
+    <string name="error_processing_ingredients">Error processing ingredients.</string>
+    <string name="no_recipes_available">No recipes available.</string>
+    <string name="no_recipes_found">No recipes found for the detected ingredients.</string>
+    <string name="error_fetching_recipes">Error finding recipes.</string>
+    <string name="error_displaying_recipes">Error displaying recipes.</string>
+    <string name="error_reading_recipe_file">Error reading recipe file</string>
+    <string name="error_opening_link">Error opening link</string>
+    <string name="zepto_link_format">Zepto Link for %1$s</string>
+    <string name="matched_ingredients">Matched Ingredients: %1$s</string>
+    <string name="missing_ingredients">Missing Ingredients: %1$s</string>
+    <string name="error_network">Error reading recipe file</string>
+    <string name="error_unknown">Error opening link</string>
+    <string name="error_parsing_response">Error parsing recipe response.</string>
 </resources>
