@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.Packaging
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -29,14 +27,14 @@ android {
         }
     }
 
-    splits {
+    /*splits {
         abi {
             isEnable = true
             reset()
             include("armeabi-v7a", "arm64-v8a")
             isUniversalApk = false
         }
-    }
+    }*/
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
