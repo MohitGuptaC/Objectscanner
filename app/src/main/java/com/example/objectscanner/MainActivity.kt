@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         currentBitmap?.recycle()
         currentBitmap = null
         labelText.text = getString(R.string.reset_complete)
-        objectImage.setImageDrawable(null)
+        objectImage.setImageResource(R.drawable.baseline_image_24)
         currentIngredientIndex = 0
         updateButtonStates()
     }

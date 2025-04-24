@@ -1,58 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/objectImage"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="Preview of the captured image"
-        android:scaleType="centerCrop"
-        android:src="@drawable/baseline_image_24" />
-
-    <TextView
-        android:id="@+id/labelText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
-        android:text="Detected labels will appear here"
-        android:textColor="@color/blue"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp" />
-
-    <Button
-        android:id="@+id/captureImgBtn"
+    <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Capture Image"
-        android:layout_marginBottom="8dp" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/resetBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Reset"
-        android:layout_marginBottom="8dp" />
+        <ImageView
+            android:id="@+id/objectImage"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Preview of the captured image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_image_24" />
 
-    <Button
-        android:id="@+id/nextBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Next Ingredient"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/labelText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:text="Detected labels will appear here"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/recommendBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recommend Recipe" />
-</LinearLayout>
+        <Button
+            android:id="@+id/captureImgBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Capture Image"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/resetBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next Ingredient"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/recommendBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recommend Recipe" />
+    </LinearLayout>
+</ScrollView>
