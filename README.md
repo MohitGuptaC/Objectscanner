@@ -32,6 +32,34 @@ This project uses the vegetable image classification dataset from:
 - `app/src/main/res/` - Resources (layouts, strings, etc.)
 - `app/src/main/assets/` - Contains dataset.json with recipe information
 
+## Building a Signed APK (Release Build)
+
+To build a signed APK for release:
+
+1. **Obtain your keystore file** and note its path, password, alias, and key password.
+2. **Edit or create a `local.properties` file** in the project root (do NOT commit this file to git):
+
+   ```properties
+   storeFile=PATH/TO/YOUR/KEYSTORE.jks
+   storePassword=yourStorePassword
+   keyAlias=yourKeyAlias
+   keyPassword=yourKeyPassword
+   ```
+   Example for Windows:
+   ```properties
+   storeFile=C:/Users/yourname/keystore/yourkey.jks
+   storePassword=yourStorePassword
+   keyAlias=yourKeyAlias
+   keyPassword=yourKeyPassword
+   ```
+
+3. **Open the project in Android Studio.**
+4. **Select the `release` build variant** in the Build Variants panel.
+5. Go to **Build > Generate Signed Bundle / APK...** and follow the prompts. The keystore info will be auto-filled from `local.properties`.
+6. The signed APKs will be in `app/build/outputs/apk/release/`.
+
+> **Note:** `local.properties` is in `.gitignore` and should never be committed to version control.
+
 ## Contributing
 
 1. Fork the repository
@@ -42,4 +70,4 @@ This project uses the vegetable image classification dataset from:
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0) - see the LICENSE file for details. This means that any derivative works must also be distributed under the same license terms. 
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0) - see the LICENSE file for details. This means that any derivative works must also be distributed under the same license terms.

@@ -19,10 +19,16 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file(System.getenv("ORG_GRADLE_PROJECT_storeFile"))
-            storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword")
-            keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias")
-            keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword")
+            val storeFilePath = System.getenv("ORG_GRADLE_PROJECT_storeFile") ?: project.findProperty("storeFile") as String?
+            val storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword") ?: project.findProperty("storePassword") as String?
+            val keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias") ?: project.findProperty("keyAlias") as String?
+            val keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword") ?: project.findProperty("keyPassword") as String?
+            if (storeFilePath != null && storePassword != null && keyAlias != null && keyPassword != null) {
+                storeFile = file(storeFilePath)
+                this.storePassword = storePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+            }
         }
     }
 
