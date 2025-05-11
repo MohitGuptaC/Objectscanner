@@ -44,9 +44,9 @@ To build a signed APK for release:
    signingConfigs {
        create("release") {
            storeFile = file(System.getenv("ORG_GRADLE_PROJECT_storeFile"))
-           storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword"))
-           keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias"))
-           keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword"))
+           storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword")
+           keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias")
+           keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword")
        }
    }
    ```
