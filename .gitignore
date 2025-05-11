@@ -83,3 +83,6 @@ app/build/outputs/
 # Ignore boilerplate test stubs
 /app/src/test/java/com/example/objectscanner/ExampleUnitTest.kt
 /app/src/androidTest/java/com/example/objectscanner/ExampleInstrumentedTest.kt
+
+# VS Code
+.vscode/
