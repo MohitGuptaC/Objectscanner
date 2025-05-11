@@ -44,9 +44,9 @@ To build a signed APK for release:
    signingConfigs {
        create("release") {
            storeFile = file(System.getenv("ORG_GRADLE_PROJECT_storeFile"))
-           storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword")
-           keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias")
-           keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword")
+           storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword"))
+           keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias"))
+           keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword"))
        }
    }
    ```
@@ -71,4 +71,3 @@ To build a signed APK for release:
 ## License
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0) - see the LICENSE file for details. This means that any derivative works must also be distributed under the same license terms.
-# Test SSH commit signing
