@@ -70,7 +70,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.mlkitImageLabelingCustom)
+    implementation(libs.mlkit.image.labeling.custom)
     implementation(libs.gson)
 
 }
