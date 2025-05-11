@@ -17,6 +17,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(System.getenv("ORG_GRADLE_PROJECT_storeFile"))
+            storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword")
+            keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias")
+            keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -24,6 +33,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
