@@ -36,26 +36,28 @@ This project uses the vegetable image classification dataset from:
 
 To build a signed APK for release:
 
-1. **Obtain your keystore file** and note its path, password, alias, and key password.
-2. **Edit or create a `local.properties` file** in the project root (do NOT commit this file to git):
+### For CI/CD (GitHub Actions, etc.):
+- The workflow uses environment variables for signing (no changes needed).
+- The following block in `app/build.gradle.kts` should be **uncommented**:
 
-   ```properties
-   storeFile=PATH/TO/YOUR/KEYSTORE.jks
-   storePassword=yourStorePassword
-   keyAlias=yourKeyAlias
-   keyPassword=yourKeyPassword
+   ```kotlin
+   signingConfigs {
+       create("release") {
+           storeFile = file(System.getenv("ORG_GRADLE_PROJECT_storeFile"))
+           storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword")
+           keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias")
+           keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword")
+       }
+   }
    ```
-   Example for Windows:
-   ```properties
-   storeFile=C:/Users/yourname/keystore/yourkey.jks
-   storePassword=yourStorePassword
-   keyAlias=yourKeyAlias
-   keyPassword=yourKeyPassword
-   ```
+
+### For local Android Studio builds:
+- **Comment out the entire `signingConfigs` block in `app/build.gradle.kts`.**
+- Use Android Studio's **Build > Generate Signed Bundle / APK...** wizard, which will let you pick your keystore and enter credentials interactively. No signing config is needed in the Gradle file for local builds.
 
 3. **Open the project in Android Studio.**
 4. **Select the `release` build variant** in the Build Variants panel.
-5. Go to **Build > Generate Signed Bundle / APK...** and follow the prompts. The keystore info will be auto-filled from `local.properties`.
+5. Go to **Build > Generate Signed Bundle / APK...** and follow the prompts.
 6. The signed APKs will be in `app/build/outputs/apk/release/`.
 
 > **Note:** `local.properties` is in `.gitignore` and should never be committed to version control.

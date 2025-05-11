@@ -18,18 +18,15 @@ android {
     }
 
     signingConfigs {
+        // For CI/CD or environment-based signing (e.g., GitHub Actions), use this block:
         create("release") {
-            val storeFilePath = System.getenv("ORG_GRADLE_PROJECT_storeFile") ?: project.findProperty("storeFile") as String?
-            val storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword") ?: project.findProperty("storePassword") as String?
-            val keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias") ?: project.findProperty("keyAlias") as String?
-            val keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword") ?: project.findProperty("keyPassword") as String?
-            if (storeFilePath != null && storePassword != null && keyAlias != null && keyPassword != null) {
-                storeFile = file(storeFilePath)
-                this.storePassword = storePassword
-                this.keyAlias = keyAlias
-                this.keyPassword = keyPassword
-            }
+            storeFile = file(System.getenv("ORG_GRADLE_PROJECT_storeFile"))
+            storePassword = System.getenv("ORG_GRADLE_PROJECT_storePassword")
+            keyAlias = System.getenv("ORG_GRADLE_PROJECT_keyAlias")
+            keyPassword = System.getenv("ORG_GRADLE_PROJECT_keyPassword")
         }
+        // For local Android Studio builds, you can comment out the above block entirely.
+        // Android Studio's "Generate Signed Bundle / APK" wizard lets you pick the keystore and credentials interactively.
     }
 
     buildTypes {
@@ -39,7 +36,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("release") //comment this line if you want to use Android Studio's interactive signing wizard
         }
     }
 
@@ -73,8 +70,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation ("com.google.mlkit:image-labeling-custom:17.0.3")
+    implementation(libs.mlkitImageLabelingCustom)
+    implementation(libs.gson)
 
-    //gson
-    implementation("com.google.code.gson:gson:2.8.9")
 }
