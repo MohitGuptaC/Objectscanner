@@ -49,7 +49,7 @@ jobs:
           echo "APK_V8=$(find app/build/outputs/apk/release -name 'app-arm64-v8a-release.apk' | head -n1)" >> $GITHUB_ENV
 
       - name: Set up GitHub CLI
-        uses: github/cli-action@v2
+        uses: actions/github-cli@v1
 
       - name: Calculate next release tag
         id: next_tag
