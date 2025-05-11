@@ -38,8 +38,8 @@ jobs:
       - name: Find APKs
         id: find_apks
         run: |
-          echo "APK_V7=$(find app/release -name '*armeabi-v7a-release.apk' | head -n1)" >> $GITHUB_ENV
-          echo "APK_V8=$(find app/release -name '*arm64-v8a-release.apk' | head -n1)" >> $GITHUB_ENV
+          echo "APK_V7=$(find app/build/outputs/apk/release -name '*armeabi-v7a-release.apk' | head -n1)" >> $GITHUB_ENV
+          echo "APK_V8=$(find app/build/outputs/apk/release -name '*arm64-v8a-release.apk' | head -n1)" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -50,4 +50,4 @@ jobs:
             ${{ env.APK_V7 }}
             ${{ env.APK_V8 }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
