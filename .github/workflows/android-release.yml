@@ -30,7 +30,7 @@ jobs:
       - name: Build signed split APKs
         run: ./gradlew :app:assembleRelease
         env:
-          ORG_GRADLE_PROJECT_storeFile: app/my-release-key.jks
+          ORG_GRADLE_PROJECT_storeFile: my-release-key.jks
           ORG_GRADLE_PROJECT_storePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           ORG_GRADLE_PROJECT_keyAlias: ${{ secrets.KEY_ALIAS }}
           ORG_GRADLE_PROJECT_keyPassword: ${{ secrets.KEY_PASSWORD }}
