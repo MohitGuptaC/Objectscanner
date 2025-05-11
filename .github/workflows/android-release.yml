@@ -20,7 +20,7 @@ jobs:
       - name: Decode Keystore
         id: decode_keystore
         run: |
-          echo "$KEYSTORE_FILE" | base64 -d > my-release-key.jks
+          echo "$KEYSTORE_FILE" | base64 -d > app/my-release-key.jks
         env:
           KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
 
@@ -30,16 +30,23 @@ jobs:
       - name: Build signed split APKs
         run: ./gradlew :app:assembleRelease
         env:
-          ORG_GRADLE_PROJECT_storeFile: my-release-key.jks
+          ORG_GRADLE_PROJECT_storeFile: app/my-release-key.jks
           ORG_GRADLE_PROJECT_storePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           ORG_GRADLE_PROJECT_keyAlias: ${{ secrets.KEY_ALIAS }}
           ORG_GRADLE_PROJECT_keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: List APK output files
+        run: |
+          echo "Listing app/release:"
+          ls -lh app/release || true
+          echo "Listing app/build/outputs/apk/release:"
+          ls -lh app/build/outputs/apk/release || true
+
       - name: Find APKs
         id: find_apks
         run: |
-          echo "APK_V7=$(find app/release -name '*armeabi-v7a-release.apk' | head -n1)" >> $GITHUB_ENV
-          echo "APK_V8=$(find app/release -name '*arm64-v8a-release.apk' | head -n1)" >> $GITHUB_ENV
+          echo "APK_V7=$(find app/release -name 'app-armeabi-v7a-release.apk' | head -n1)" >> $GITHUB_ENV
+          echo "APK_V8=$(find app/release -name 'app-arm64-v8a-release.apk' | head -n1)" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
