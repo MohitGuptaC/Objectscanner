@@ -60,8 +60,6 @@ To build a signed APK for release:
 5. Go to **Build > Generate Signed Bundle / APK...** and follow the prompts.
 6. The signed APKs will be in `app/build/outputs/apk/release/`.
 
-> **Note:** `local.properties` is in `.gitignore` and should never be committed to version control.
-
 ## Contributing
 
 1. Fork the repository
