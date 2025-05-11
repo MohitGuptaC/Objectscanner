@@ -41,13 +41,6 @@ jobs:
           ORG_GRADLE_PROJECT_keyAlias: ${{ secrets.KEY_ALIAS }}
           ORG_GRADLE_PROJECT_keyPassword: ${{ secrets.KEY_PASSWORD }}
 
-      - name: List APK output files
-        run: |
-          echo "Listing app/release:"
-          ls -lh app/release || true
-          echo "Listing app/build/outputs/apk/release:"
-          ls -lh app/build/outputs/apk/release || true
-
       - name: Find APKs
         id: find_apks
         run: |
