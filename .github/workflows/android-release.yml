@@ -54,11 +54,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          PREV_TAG=$(git tag --sort=-creatordate | grep -E '^v[0-9]+\.[0-9]+$' | head -n2 | tail -n1)
+          echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
+
+      - name: Set release description with changelog link
+        id: set_description
+        run: |
+          echo "RELEASE_BODY=**Full Changelog**: https://github.com/MohitGuptaC/Objectscanner/compare/$PREV_TAG...$NEW_TAG" >> $GITHUB_ENV
+        env:
+          PREV_TAG: ${{ env.PREV_TAG }}
+          NEW_TAG: ${{ env.NEW_TAG }}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: 'Automated Release ${{ env.NEW_TAG }}'
+          name: 'Release ${{ env.NEW_TAG }}'
           tag_name: ${{ env.NEW_TAG }}
+          body: ${{ env.RELEASE_BODY }}
           files: |
             ${{ env.APK_V7 }}
             ${{ env.APK_V8 }}
