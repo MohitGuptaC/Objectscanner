@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_marginTop="16dp"
-            android:contentDescription="Preview of the captured image"
+            android:contentDescription="@string/preview_of_the_captured_image"
             android:scaleType="centerCrop"
             android:src="@drawable/baseline_image_24" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="80dp"
-            android:text="Detected labels will appear here"
+            android:text="@string/detected_labels_will_appear_here"
             android:textColor="@color/blue"
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
@@ -36,28 +36,28 @@
         <Button
             android:id="@+id/captureImgBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Capture Image"
-            android:layout_marginBottom="8dp" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:text="@string/capture_image" />
 
         <Button
             android:id="@+id/resetBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reset"
+            android:text="@string/reset"
             android:layout_marginBottom="8dp" />
 
         <Button
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next Ingredient"
+            android:text="@string/next_ingredient"
             android:layout_marginBottom="8dp" />
 
         <Button
             android:id="@+id/recommendBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Recommend Recipe" />
+            android:text="@string/recommend_recipe" />
     </LinearLayout>
 </ScrollView>

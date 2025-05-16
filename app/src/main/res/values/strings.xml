@@ -31,4 +31,17 @@
     <string name="error_network">Error reading recipe file</string>
     <string name="error_unknown">Error opening link</string>
     <string name="error_parsing_response">Error parsing recipe response.</string>
+
+    <!-- activity_main strings -->
+    <string name="capture_image">Capture Image</string>
+    <string name="detected_labels_will_appear_here">Detected labels will appear here</string>
+    <string name="next_ingredient">Next Ingredient</string>
+    <string name="preview_of_the_captured_image">Preview of the captured image</string>
+    <string name="recommend_recipe">Recommend Recipe</string>
+    <string name="reset">Reset</string>
+
+    <!-- activity_recipe_recommendation strings -->
+    <string name="recipe_recommendations">Recipe Recommendations</string>
+    <string name="go_back">Go Back</string>
+
 </resources>

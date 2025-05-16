@@ -1,6 +1,7 @@
 package com.example.objectscanner
 
 import android.content.Intent
+import androidx.core.net.toUri
 import android.os.Bundle
 import android.util.Log
 import android.webkit.WebResourceRequest
@@ -10,9 +11,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import java.io.IOException
-import androidx.core.net.toUri
 
 class RecipeRecommendationActivity : AppCompatActivity() {
 
@@ -89,34 +90,130 @@ class RecipeRecommendationActivity : AppCompatActivity() {
 
     private fun displayRecipes(matchedRecipes: List<RecipeWithDetails>) {
         try {
-            val recommendationsHtml = matchedRecipes
+            // Get colors from resources - these will adapt to dark or light mode automatically
+            val backgroundColor = ContextCompat.getColor(this, R.color.backgroundcolor)
+            val textColor = ContextCompat.getColor(this, R.color.black)
+            val cardBackgroundColor = ContextCompat.getColor(this, R.color.backgroundcolor)
+            val linkColor = ContextCompat.getColor(this, R.color.blue)
+            val buttonColor = ContextCompat.getColor(this, R.color.blue)
+            val buttonTextColor = ContextCompat.getColor(this, R.color.white)
+
+            // Convert colors to hex strings for CSS
+            val backgroundColorHex = String.format("#%06X", 0xFFFFFF and backgroundColor)
+            val textColorHex = String.format("#%06X", 0xFFFFFF and textColor)
+            val cardBackgroundColorHex = String.format("#%06X", 0xFFFFFF and cardBackgroundColor)
+            val linkColorHex = String.format("#%06X", 0xFFFFFF and linkColor)
+            val buttonColorHex = String.format("#%06X", 0xFFFFFF and buttonColor)
+            val buttonTextColorHex = String.format("#%06X", 0xFFFFFF and buttonTextColor)
+
+            val htmlHeader = """
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                        body {
+                            background-color: $backgroundColorHex;
+                            color: $textColorHex;
+                            font-family: sans-serif;
+                            padding: 12px;
+                            margin: 0;
+                        }
+                        .recipe-card {
+                            background-color: $cardBackgroundColorHex;
+                            border-radius: 8px;
+                            padding: 16px;
+                            margin-bottom: 16px;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        }
+                        .recipe-title {
+                            font-size: 18px;
+                            font-weight: bold;
+                            margin-bottom: 8px;
+                        }                        .recipe-link {
+                            color: $linkColorHex;
+                            text-decoration: none;
+                            margin-bottom: 8px;
+                            display: block;
+                            word-break: break-all;
+                        }
+                        .ingredient-section {
+                            margin: 8px 0;
+                        }
+                        .ingredient-label {
+                            font-weight: bold;
+                            margin-right: 4px;
+                        }
+                        .button-container {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 8px;
+                            margin-top: 12px;
+                        }
+                        .zepto-button {
+                            background-color: $buttonColorHex;
+                            color: $buttonTextColorHex;
+                            border: none;
+                            border-radius: 4px;
+                            padding: 8px 12px;
+                            text-align: center;
+                            text-decoration: none;
+                            display: inline-block;
+                            font-size: 14px;
+                            cursor: pointer;
+                        }
+                    </style>
+                </head>
+                <body>
+            """.trimIndent()
+
+            val recipeCards = matchedRecipes
                 .sortedByDescending { it.matchedIngredients.size }
-                .joinToString("<br><br>") { recipe ->
-                    val zeptoLinks = recipe.missingIngredients.joinToString("<br>") { ingredient ->
-                        "<a href='https://www.zeptonow.com/search?query=$ingredient'>Zepto Link for $ingredient</a>"
+                .joinToString("") { recipe ->
+                    val zeptoButtons = recipe.missingIngredients.joinToString("") { ingredient ->
+                        """<a href='https://www.zeptonow.com/search?query=$ingredient' class='zepto-button'>Buy $ingredient</a>"""
                     }
 
                     """
-                    <b>${recipe.name}:</b><br>
-                    <a href="${recipe.link}">${recipe.link}</a><br>
-                    Matched Ingredients: ${recipe.matchedIngredients.joinToString(", ")}<br>
-                    Missing Ingredients: ${recipe.missingIngredients.joinToString(", ")}<br>
-                    $zeptoLinks
+                    <div class='recipe-card'>
+                        <div class='recipe-title'>${recipe.name}</div>
+                        <a href="${recipe.link}" class='recipe-link'>${recipe.link}</a>
+                        
+                        <div class='ingredient-section'>
+                            <span class='ingredient-label'>Matched Ingredients:</span>
+                            ${recipe.matchedIngredients.joinToString(", ")}
+                        </div>
+                        
+                        <div class='ingredient-section'>
+                            <span class='ingredient-label'>Missing Ingredients:</span>
+                            ${recipe.missingIngredients.joinToString(", ")}
+                        </div>
+                        
+                        <div class='button-container'>
+                            $zeptoButtons
+                        </div>
+                    </div>
                     """.trimIndent()
                 }
 
-            // JavaScript is enabled only for local HTML content that we control
-            // The content is generated by our app and doesn't contain user input
+            val htmlFooter = """
+                </body>
+                </html>
+            """.trimIndent()
+
+            val fullHtml = htmlHeader + recipeCards + htmlFooter
+
             webView.settings.apply {
                 javaScriptEnabled = true
-                // Disable potentially dangerous features
                 domStorageEnabled = false
                 allowFileAccess = false
                 allowContentAccess = false
             }
-            
+
             webView.webViewClient = CustomWebViewClient()
-            webView.loadDataWithBaseURL(null, recommendationsHtml, "text/html; charset=UTF-8", "UTF-8", null)
+            webView.loadDataWithBaseURL(null, fullHtml, "text/html; charset=UTF-8", "UTF-8", null)
+
+            recommendationsTextView.text = ""
         } catch (e: Exception) {
             Log.e(TAG, "Error displaying recipes: ${e.message}")
             recommendationsTextView.text = getString(R.string.error_parsing_response)
@@ -151,19 +248,15 @@ class RecipeRecommendationActivity : AppCompatActivity() {
 
     private inner class CustomWebViewClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-            val url = request?.url?.toString()
-            if (url != null) {
-                try {
-                    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                    // Always try to open in external app
-                    startActivity(intent)
-                    return true
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error opening URL: ${e.message}")
-                    Toast.makeText(this@RecipeRecommendationActivity, getString(R.string.error_unknown), Toast.LENGTH_SHORT).show()
-                }
+            val url = request?.url.toString()
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                startActivity(intent)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error opening URL: ${e.message}")
+                Toast.makeText(this@RecipeRecommendationActivity, getString(R.string.error_unknown), Toast.LENGTH_SHORT).show()
             }
-            return false
+            return true
         }
     }
 
