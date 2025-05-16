@@ -12,7 +12,7 @@ on:
       - 'gradle.properties'               # Gradle properties
       - 'gradle/libs.versions.toml'       # Dependency versions
       - '.github/workflows/android-release.yml'  # Workflow itself
-      - '.github/scripts/increment_release_tag.sh'  # Release script
+#      - '.github/scripts/increment_release_tag.sh'  # Release script
 
 permissions:
   contents: write
