@@ -60,7 +60,7 @@ class RecipeAdapter(
 
                     // Force apply background and text colors for visibility in both themes
                     setBackgroundColor(context.getColor(R.color.blue))
-                    setTextColor(context.getColor(R.color.black))
+                    setTextColor(context.getColor(R.color.white))
 
                     // Open Zepto link
                     setOnClickListener {
