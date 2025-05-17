@@ -38,10 +38,11 @@
     <string name="next_ingredient">Next Ingredient</string>
     <string name="preview_of_the_captured_image">Preview of the captured image</string>
     <string name="recommend_recipe">Recommend Recipe</string>
-    <string name="reset">Reset</string>
-
-    <!-- activity_recipe_recommendation strings -->
-    <string name="recipe_recommendations">Recipe Recommendations</string>
+    <string name="reset">Reset</string>    <!-- activity_recipe_recommendation strings -->    <string name="recipe_recommendations">Recipe Recommendations</string>
     <string name="go_back">Go Back</string>
+    <string name="buy_ingredient">Buy %1$s</string>    <string name="matched_ingredients_label">Matched Ingredients: </string>    <string name="missing_ingredients_label">Missing Ingredients: </string>
+    <string name="buy_ingredients_container_description">Buttons to buy missing ingredients</string>
+    <string name="buy_ingredient_accessibility">Search for and buy %1$s on Zepto</string>
+    <string name="recipe_link_description">Link to recipe webpage, tap to open in browser</string>
 
 </resources>

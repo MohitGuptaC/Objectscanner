@@ -5,7 +5,19 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryVariant">@color/blue</item>
         <item name="android:statusBarColor">@color/blue</item>
+    </style>    <style name="Theme.Objectscanner" parent="Base.Theme.Objectscanner" />
+      
+    <!-- Custom button style for "Buy ingredient" buttons -->
+    <style name="BuyIngredientButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="cornerRadius">20dp</item>
     </style>
-
-    <style name="Theme.Objectscanner" parent="Base.Theme.Objectscanner" />
 </resources>
