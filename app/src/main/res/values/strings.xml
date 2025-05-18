@@ -1,48 +1,46 @@
 <resources>
     <string name="app_name">Objectscanner</string>
 
-    <!-- MainActivity strings -->
-    <string name="error_optimizing_image">Error optimizing image.</string>
-    <string name="unable_to_capture_image">Unable to capture image.</string>
-    <string name="error_processing_image">Error processing image.</string>
-    <string name="no_camera_app_found">No camera app found on the device.</string>
-    <string name="error_accessing_camera">Error accessing camera</string>
-    <string name="reset_complete">Reset complete. Start fresh!</string>
-    <string name="no_image_to_process">No image to process.</string>
-    <string name="image_recognition_not_initialized">Image recognition not initialized.</string>
-    <string name="error_initializing_recognition">Error initializing image recognition</string>
-    <string name="image_capture_cancelled">Image capture cancelled.</string>
-    <string name="press_capture_to_scan_next">Press Capture to scan next</string>
-    <string name="detected_label">Detected: %1$s</string>
-    <string name="no_ingredient_detected">No ingredient detected.</string>
-
-    <!-- RecipeRecommendationActivity strings -->
-    <string name="no_ingredients_detected">No ingredients detected.</string>
-    <string name="error_processing_ingredients">Error processing ingredients.</string>
-    <string name="no_recipes_available">No recipes available.</string>
-    <string name="no_recipes_found">No recipes found for the detected ingredients.</string>
-    <string name="error_fetching_recipes">Error finding recipes.</string>
-    <string name="error_displaying_recipes">Error displaying recipes.</string>
-    <string name="error_reading_recipe_file">Error reading recipe file</string>
-    <string name="error_opening_link">Error opening link</string>
-    <string name="zepto_link_format">Zepto Link for %1$s</string>
-    <string name="matched_ingredients">Matched Ingredients: %1$s</string>
-    <string name="missing_ingredients">Missing Ingredients: %1$s</string>
-    <string name="error_network">Error reading recipe file</string>
-    <string name="error_unknown">Error opening link</string>
-    <string name="error_parsing_response">Error parsing recipe response.</string>
-
-    <!-- activity_main strings -->
+    <!-- MainScreen strings -->
     <string name="capture_image">Capture Image</string>
     <string name="detected_labels_will_appear_here">Detected labels will appear here</string>
     <string name="next_ingredient">Next Ingredient</string>
     <string name="preview_of_the_captured_image">Preview of the captured image</string>
     <string name="recommend_recipe">Recommend Recipe</string>
-    <string name="reset">Reset</string>    <!-- activity_recipe_recommendation strings -->    <string name="recipe_recommendations">Recipe Recommendations</string>
-    <string name="go_back">Go Back</string>
-    <string name="buy_ingredient">Buy %1$s</string>    <string name="matched_ingredients_label">Matched Ingredients: </string>    <string name="missing_ingredients_label">Missing Ingredients: </string>
-    <string name="buy_ingredients_container_description">Buttons to buy missing ingredients</string>
-    <string name="buy_ingredient_accessibility">Search for and buy %1$s on Zepto</string>
-    <string name="recipe_link_description">Link to recipe webpage, tap to open in browser</string>
+    <string name="reset">Reset</string>
+    <string name="detected_label">Detected: %1$s</string>
+    <string name="no_ingredient_detected">No ingredient detected.</string>
+    <string name="processing_image">Processing image…</string>
+    <string name="camera_permission_required">Camera permission is required to use this feature.</string>
 
+    <!-- MainScreen error strings -->
+    <string name="error_accessing_camera">Error accessing camera</string>
+    <string name="error_initializing_recognition">Error initializing image recognition</string>
+    <string name="error_optimizing_image">Error optimizing image.</string>
+    <string name="error_processing_image">Error processing image.</string>
+    <string name="error_opening_recommendations">Error opening recommendations</string>
+    <string name="image_capture_cancelled">Image capture cancelled.</string>
+    <string name="image_recognition_not_initialized">Image recognition not initialized.</string>
+    <string name="no_camera_app_found">No camera app found on the device.</string>
+    <string name="no_image_to_process">No image to process.</string>
+    <string name="unable_to_capture_image">Unable to capture image.</string>
+
+    <!-- RecipeScreen strings -->
+    <string name="recipe_recommendations">Recipe Recommendations</string>
+    <string name="go_back">Go Back</string>
+    <string name="matched_ingredients_label">Matched Ingredients: </string>
+    <string name="missing_ingredients_label">Missing Ingredients: </string>
+    <string name="buy_ingredient">Buy %1$s</string>
+    <string name="buy_ingredient_accessibility">Search for and buy %1$s on Zepto</string>
+    <string name="no_matched_ingredients">No matched ingredients</string>
+
+    <!-- RecipeScreen error strings -->
+    <string name="error_displaying_recipes">Error displaying recipes.</string>
+    <string name="error_fetching_recipes">Error finding recipes.</string>
+    <string name="error_opening_link">Error opening link</string>
+    <string name="error_opening_shopping_link">Error opening shopping link</string>
+    <string name="no_ingredients_detected">No ingredients detected.</string>
+    <string name="no_recipes_found">No recipes found for the detected ingredients.</string>
+    <string name="no_browser_app">No browser app found on device</string>
+    <string name="no_shopping_app">No shopping app found on device</string>
 </resources>
