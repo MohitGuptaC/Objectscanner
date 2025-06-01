@@ -70,4 +70,4 @@ To build a signed APK for release:
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0) - see the LICENSE file for details. This means that any derivative works must also be distributed under the same license terms.
+This project is licensed under the BSD 3-Clause License - see the LICENSE file for details.
