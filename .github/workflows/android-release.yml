@@ -12,7 +12,6 @@ on:
       - 'gradle.properties'               # Gradle properties
       - 'gradle/libs.versions.toml'       # Dependency versions
       - '.github/workflows/android-release.yml'  # Workflow itself
-#      - '.github/scripts/increment_release_tag.sh'  # Release script
 
 permissions:
   contents: write
@@ -39,12 +38,15 @@ jobs:
           echo "$KEYSTORE_FILE" | base64 -d > app/my-release-key.jks
         env:
           KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
+      - name: Make shell script executable
+        run: chmod +x .github/scripts/increment_release_tag.sh
 
       - name: Build signed split APKs
-        run: cd app && ../gradlew assembleRelease
+        run: cd app && ../gradlew assembleRelease --no-daemon --no-build-cache --no-configuration-cache
         env:
           ORG_GRADLE_PROJECT_storeFile: my-release-key.jks
           ORG_GRADLE_PROJECT_storePassword: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -82,7 +84,7 @@ jobs:
       - name: Set release description with changelog link
         id: set_description
         run: |
-          echo "RELEASE_BODY=**Full Changelog**: https://github.com/MohitGuptaC/Objectscanner/compare/$PREV_TAG...$NEW_TAG" >> $GITHUB_ENV
+          echo "RELEASE_BODY=**Full Changelog**: https://github.com/MohitGuptaC/Objecscanner/compare/$PREV_TAG...$NEW_TAG" >> $GITHUB_ENV
         env:
           PREV_TAG: ${{ env.PREV_TAG }}
           NEW_TAG: ${{ env.NEW_TAG }}
