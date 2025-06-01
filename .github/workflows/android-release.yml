@@ -84,7 +84,7 @@ jobs:
       - name: Set release description with changelog link
         id: set_description
         run: |
-          echo "RELEASE_BODY=**Full Changelog**: https://github.com/MohitGuptaC/Objecscanner/compare/$PREV_TAG...$NEW_TAG" >> $GITHUB_ENV
+          echo "RELEASE_BODY=**Full Changelog**: https://github.com/MohitGuptaC/Objectscanner/compare/$PREV_TAG...$NEW_TAG" >> $GITHUB_ENV
         env:
           PREV_TAG: ${{ env.PREV_TAG }}
           NEW_TAG: ${{ env.NEW_TAG }}
