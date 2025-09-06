@@ -100,3 +100,5 @@ jobs:
             ${{ env.APK_V8 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+          #manual run action
