@@ -12,6 +12,7 @@ on:
       - 'gradle.properties'               # Gradle properties
       - 'gradle/libs.versions.toml'       # Dependency versions
       - '.github/workflows/android-release.yml'  # Workflow itself
+  workflow_dispatch:                              # Manual trigger
 
 permissions:
   contents: write
